@@ -1,4 +1,4 @@
 # Required packages for this App:
-* Pandas
-* Plotly
-* Streamlit
+Pandas
+Plotly
+Streamlit
