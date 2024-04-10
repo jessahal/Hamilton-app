@@ -3,6 +3,14 @@ import plotly.express as px
 import streamlit as st
 
 st.title("Lewis Hamilton F1 Race Stats")
+st.markdown("""
+## Description
+The purpose of this app is to explore the stats of one of the greatest Formula 1 Drivers of all time: Lewis Hamilton.
+Users can...
+    - Explore different years of Hamilton's career
+    - See stats on Hamilton's top 5 races of each season
+    - Some more stuff that hasn't been decided yet lol
+            """)
 
 url = "https://raw.githubusercontent.com/jessahal/Hamilton-app/main/hamilton_stats.csv"
 
