@@ -8,30 +8,42 @@ url = "https://raw.githubusercontent.com/jessahal/Hamilton-app/main/hamilton_sta
 
 ham_df = pd.read_csv(url)
 
-tab1, tab2 = st.tabs(['Mercedes', 'McLaren'])
+tab1, tab2 = st.tabs(['McLaren', 'Mercedes'])
 
 with tab1:
-    merc_data = ham_df[ham_df['Team'] == "Mercedes"]
-    merc_fig = sns.lineplot(data = merc_data, x = "Date", y = 'Position', palette = 'turquoise')
-
-    # Flip the y-axis so higher positions are at the top 
-    merc_fig.gca().invert_yaxis()
-    merc_fig.ylim(1, 25)
-    merc_fig.title("Hamilton's Races over the Years")
-    merc_fig.legend(loc = (1.01, 0))
-    merc_fig.subplots_adjust(right=0.8);  # Increase the right margin to make room for the legend
-    st.header(f'Team {tab1}')
-    st.plotly_chart(merc_fig)
+    mclar_data = ham_df[ham_df['Team'] == "McLaren"]
+    mclar_fig = px.line(mclar_data, x="Date", y='Position', title="Hamilton's Races over the Years")
+    mclar_fig.update_traces(line_color = "orange")
+    mclar_fig.update_yaxes(autorange="reversed")  # Flip y-axis range
+    start_year = mclar_data['Season'].min()
+    end_year = mclar_data['Season'].max()
+    st.header(f'Team McLaren: {start_year}-{end_year}')
+    st.plotly_chart(mclar_fig)  # Display the Plotly chart using st.plotly_chart
 
 with tab2:
-    mclar_data = ham_df[ham_df['Team'] == "McLaren"]
-    mclar_fig = sns.lineplot(data = mclar_data, x = "Date", y = 'Position', palette = 'orange')
+    merc_data = ham_df[ham_df['Team'] == "Mercedes"]
+    merc_fig = px.line(merc_data, x="Date", y='Position', title="Hamilton's Races over the Years")
+    merc_fig.update_traces(line_color = "turquoise")
+    merc_fig.update_yaxes(autorange="reversed")  # Flip  y-axis range
+    start_year = merc_data['Season'].min()
+    end_year = merc_data['Season'].max()
+    st.header(f'Team Mercedes: {start_year}-{end_year}')
+    st.plotly_chart(merc_fig)  # Display the Plotly chart using st.plotly_chart
 
-    # Flip the y-axis so higher positions are at the top 
-    mclar_fig.gca().invert_yaxis()
-    mclar_fig.ylim(1, 25)
-    mclar_fig.title("Hamilton's Races over the Years")
-    mclar_fig.legend(loc = (1.01, 0))
-    mclar_fig.subplots_adjust(right=0.8);  # Increase the right margin to make room for the legend
-    st.header(f'Team {tab2}')
-    st.plotly_chart(mclar_fig)
+with st.sidebar:
+    year = st.slider('Choose a year', 2007, 2024)
+    st.header(f'Top Races of {year}')
+    st.sidebar.markdown("*Speed in MPH")
+
+    year_df = ham_df[ham_df['Season']==year]
+
+    races = year_df.sort_values('Position', ascending=True).head(5)
+    races = races.reset_index(drop = True)
+    races.index += 1
+    st.dataframe(races[['Race', 'Position', 'Time', 'Avg Speed']])
+    
+    with st.expander("See explanation on Time"):
+        st.write("""
+            If Hamilton was P1, 'Time' represents his total race time. 
+            Otherwise, it's the time between him and P1, usually represented in seconds.
+                 """)
