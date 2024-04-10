@@ -2,5 +2,5 @@
 Pandas
 Plotly
 Streamlit
-matplotlib
-seaborn
+Matplotlib
+Seaborn
