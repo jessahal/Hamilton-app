@@ -2,5 +2,3 @@
 Pandas
 Plotly
 Streamlit
-Matplotlib
-Seaborn
