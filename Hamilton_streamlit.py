@@ -6,11 +6,12 @@ import streamlit as st
 st.title("Lewis Hamilton F1 Race Stats")
 st.markdown("""
 ## Welcome to the F1 Lewis Hamilton App!
-The purpose of this app is to explore the stats of one of the greatest Formula 1 Drivers of all time: Lewis Hamilton.
+The purpose of this app is to explore the data of one of the greatest Formula 1 Drivers of all time: Lewis Hamilton.
 Users can...
-- Explore different years of Hamilton's career
+- Explore different years of Hamilton's career and see how they compare
+- Look at the difference between Hamilton's two F1 Teams- Mercedes and McLaren
 - See stats on Hamilton's top 5 races of each season
-- Compare different year's averages
+- Compare different year's averages on the races
 - Look at the breakdown of specific Grand Prix Stats
             """)
 
@@ -39,6 +40,39 @@ with tab2:
     end_year = merc_data['Season'].max()
     st.header(f'Team Mercedes: {start_year}-{end_year}')
     st.plotly_chart(merc_fig)  # Display the Plotly chart using st.plotly_chart
+
+st.header(f'Distribution of Race Positions')
+
+with st.expander("Filter Races"):
+    McLaren = st.checkbox("Show McLaren Races", True)
+    Mercedes = st.checkbox("Show Mercedes Races", True)
+
+if McLaren and Mercedes:
+    filtered_data = pd.concat([mclar_data, merc_data])
+    color = 'purple'
+    title = "Hamilton's Race Positions- Both Teams"
+elif McLaren:
+    filtered_data = mclar_data
+    color = 'orange'
+    title = 'McLaren Race Positions'
+elif Mercedes:
+    filtered_data = merc_data
+    color = 'turquoise'
+    title = 'Mercedes Race Positions'
+else:
+    filtered_data = pd.DataFrame(columns=["Position"])
+
+# Original race distribution histogram
+race_dist = px.histogram(ham_df, x="Position")
+# race_dist_fig = st.plotly_chart(race_dist)
+
+# Update the plot with filtered data
+if not filtered_data.empty:
+    updated_race_dist = px.histogram(filtered_data, x="Position", title = title)
+    updated_race_dist.update_traces(marker_color = color)
+    st.plotly_chart(updated_race_dist)
+else:
+    st.warning("Please select at least one team to display race distribution.")
 
 with st.sidebar:
     year = st.slider('Choose a year', 2007, 2024)
@@ -103,7 +137,7 @@ if not filtered_data.empty:
     race_count = len(filtered_data)
 
     st.write(f"Race Count: {race_count}")
-    st.write(f"Mean Position: {round(mean_position)}")
+    st.write(f"Avg Position: {round(mean_position)}")
     st.write(f"Avg Starting Position: {round(avg_start)}")
     st.write(f"Best Position: {min_position}")
     st.write(f"Worst Position: {max_position}")
@@ -122,7 +156,7 @@ with tab3:
     scatter_fig.update_yaxes(autorange="reversed")
     scatter_fig.update_layout(
         title=f"Hamilton's Position over the Years - {selected_race}",
-        xaxis_title="Race",
+        xaxis_title="Year",
         yaxis_title="Ending Position",
         showlegend= False
     )
@@ -135,8 +169,8 @@ with tab4:
     scatter_fig.update_traces(marker=dict(size=12))
     scatter_fig.update_layout(
         title=f"Hamilton's Speed Bver the Years - {selected_race}",
-        xaxis_title="Race",
-        yaxis_title="Ending Position",
+        xaxis_title="Year",
+        yaxis_title="Speed",
         showlegend= False
     )
     st.plotly_chart(scatter_fig)
