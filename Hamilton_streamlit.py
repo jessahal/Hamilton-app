@@ -63,12 +63,12 @@ else:
     filtered_data = pd.DataFrame(columns=["Position"])
 
 # Original race distribution histogram
-race_dist = px.histogram(ham_df, x="Position")
+race_dist = px.histogram(ham_df, x="Position", )
 # race_dist_fig = st.plotly_chart(race_dist)
 
 # Update the plot with filtered data
 if not filtered_data.empty:
-    updated_race_dist = px.histogram(filtered_data, x="Position", title = title)
+    updated_race_dist = px.histogram(filtered_data, x="Position", title = title, nbins = 25)
     updated_race_dist.update_traces(marker_color = color)
     st.plotly_chart(updated_race_dist)
 else:
