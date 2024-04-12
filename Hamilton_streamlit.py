@@ -10,7 +10,8 @@ The purpose of this app is to explore the stats of one of the greatest Formula 1
 Users can...
 - Explore different years of Hamilton's career
 - See stats on Hamilton's top 5 races of each season
-- Some more stuff that hasn't been decided yet lol
+- Compare different year's averages
+- Look at the breakdown of specific Grand Prix Stats
             """)
 
 url = "https://raw.githubusercontent.com/jessahal/Hamilton-app/main/hamilton_stats.csv"
