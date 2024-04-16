@@ -89,8 +89,9 @@ with st.sidebar:
     with st.expander("See Explanation on Time"):
         st.write("""
     The Time Column is calculated based on whoever was P1 in the race. 
-    If Lewis was P1, his total race time was given. Otherwise, the time is given in how many seconds
-    after first place he finished. ie) If Lewis was P2, .25 seconds behind P1, his time would be "+0.25"
+    If Hamilton was P1, his total race time was given. Otherwise, the time is given in how many seconds
+    after first place he finished. 
+                 ie) If Lewis was P2, 5.25 seconds behind P1, his time would be "+5.25"
 """)
     
     selected_years = st.multiselect('Select years for comparison', ham_df["Season"].unique())
