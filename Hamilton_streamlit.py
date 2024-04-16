@@ -85,6 +85,13 @@ with st.sidebar:
     races = races.reset_index(drop = True)
     races.index += 1
     st.dataframe(races[['Race', 'Position', 'Time', 'Avg Speed']])
+
+    with st.expander("See Explanation on Time"):
+        st.write("""
+    The Time Column is calculated based on whoever was P1 in the race. 
+    If Lewis was P1, his total race time was given. Otherwise, the time is given in how many seconds
+    after first place he finished. ie) If Lewis was P2, .25 seconds behind P1, his time would be "+0.25"
+""")
     
     selected_years = st.multiselect('Select years for comparison', ham_df["Season"].unique())
 
